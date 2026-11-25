@@ -1,0 +1,16 @@
+# macOS files
+.DS_Store
+**/.DS_Store
+
+# MARS / Java generated files
+*.class
+*.log
+
+# Editor files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
+*~
