@@ -1,165 +1,125 @@
 # 🔐 CipherMIPS
 
-### A lightweight encryption & decryption toolkit built entirely in MIPS Assembly
+**A menu-driven Caesar and XOR cipher toolkit written in MIPS Assembly.**
 
-CipherMIPS is a command-line encryption and decryption program written in **MIPS Assembly**. It explores low-level string processing, ASCII manipulation, bitwise operations, loops, branches, and procedures.
+CipherMIPS demonstrates low-level string processing, ASCII manipulation, byte-level memory access, bitwise operations, procedures, branching, and MIPS syscalls.
 
-## 🚀 Features
-
-### 🔤 Caesar Cipher
-- Encryption and decryption
-- Uppercase and lowercase support
-- Alphabet wraparound
-- Preserves non-alphabetic characters
-
-```text
-Message: HELLO WORLD
-Key: 3
-Encrypted: KHOOR ZRUOG
-```
-
-### ⚡ XOR Cipher
-Processes each character using bitwise XOR with a user-provided key.
-
-```text
-EncryptedByte = OriginalByte XOR Key
-OriginalByte  = EncryptedByte XOR Key
-```
+## ✨ Features
+- Caesar Cipher encryption and decryption
+- Uppercase and lowercase support with alphabet wraparound
+- XOR Cipher transformation and reversibility using the same key
+- Menu-driven interface
+- Message/key input and validation
+- XOR byte-value output for non-printable encrypted data
 
 ## 🧠 How It Works
-
 ```text
                     CipherMIPS
                         |
                         v
                    Main Menu
                         |
-              +---------+---------+
-              |                   |
-              v                   v
-        Caesar Cipher         XOR Cipher
-              |                   |
-              v                   v
-        ASCII shifting        Bitwise XOR
-              |                   |
-              +---------+---------+
+          +-------------+-------------+
+          |                           |
+          v                           v
+    Caesar Cipher                 XOR Cipher
+    Encrypt/Decrypt              Transform bytes
+          |                           |
+          v                           v
+     ASCII shifting                Bitwise XOR
+          |                           |
+          +-------------+-------------+
+                        |
                         v
-              Encrypted / Decrypted
                       Output
 ```
 
-## 🛠️ MIPS Concepts Used
-
-- String traversal using memory addresses
-- Byte-level access with `lb` and `sb`
-- ASCII character manipulation
-- Bitwise XOR
-- Registers and argument passing
-- Loops and conditional branches
-- Procedures using `jal` / `jr $ra`
-- MIPS syscalls
-- Character buffers
-- Modular program design
-
-## 📁 Project Structure
+### Caesar Cipher
+The Caesar cipher shifts each alphabetic character by a user-provided key.
 
 ```text
+Message: hello
+Key: 3
+Encrypted: khoor
+Decrypted: hello
+```
+
+Wraparound is supported, so with key `3`, `x -> a`, `y -> b`, and `z -> c`.
+
+### XOR Cipher
+Each input byte is XORed with the key:
+```text
+encrypted_byte = original_byte XOR key
+encrypted_byte XOR key = original_byte
+```
+Because XOR can produce non-printable characters, CipherMIPS displays the transformed result as byte values and demonstrates recovery of the original message.
+
+## 📁 Project Files
+```text
 CipherMIPS/
+├── main.asm
 ├── caesar_cipher.asm
 ├── xorCipher.asm
-├── main.asm
+├── CONTRIBUTIONS.md
 └── README.md
 ```
 
-> `main.asm` and final integration are currently under development.
+### `main.asm`
+Controls the menu, reads the message and key, validates input, calls the selected cipher procedure, displays results, and integrates both cipher modules.
 
-## 🌿 Development Branches
+### `caesar_cipher.asm`
+Contains `encrypt` and `decrypt`. It processes the string byte-by-byte, identifies uppercase/lowercase ASCII characters, shifts by the key, handles wraparound, and modifies the message in place.
 
-```text
-main
-├── menu-input-integration
-├── caesar-encryption-decryption
-└── xor-encryption-decryption
-```
+### `xorCipher.asm`
+Processes each input byte with the XOR key and writes the transformed bytes into a separate output buffer.
 
-## 📊 Development Status
+## 🛠️ MIPS Concepts Used
+- Registers and procedure arguments
+- `lb`, `lbu`, and `sb`
+- ASCII character ranges
+- String traversal with pointers
+- Loops and conditional branches
+- `add`, `sub`, and `xor`
+- `jal` and `jr $ra`
+- MIPS input/output syscalls
+- Null-terminated strings
+- Input/output buffers
+- Modular assembly files using `.include`
 
-| Component | Status |
-|---|---|
-| Caesar Encryption | ✅ Complete |
-| Caesar Decryption | ✅ Complete |
-| XOR Encryption / Decryption | ✅ Complete |
-| Menu System | 🚧 In Progress |
-| User Input / Key Handling | 🚧 In Progress |
-| Module Integration | 🚧 In Progress |
-| Final Testing | ⏳ Pending |
+## ▶️ Running the Project
+Designed for **MARS**.
 
-## 👥 Team Responsibilities
-
-### Person 1 — Menu & Integration
-Menu system, user input, key handling, program flow, and module integration.
-
-**Status:** 🚧 In Progress
-
-### Person 2 — Caesar Cipher
-Caesar encryption/decryption, uppercase/lowercase handling, and alphabet wraparound.
-
-**Status:** ✅ Complete
-
-### Person 3 — XOR Cipher
-XOR transformation, byte-by-byte processing, and output buffer handling.
-
-**Status:** ✅ Complete
-
-## 🧪 Planned Final Interface
+1. Keep `main.asm`, `caesar_cipher.asm`, and `xorCipher.asm` in the same directory.
+2. Open **`main.asm`** in MARS.
+3. Assemble `main.asm`; it includes the two cipher files automatically.
+4. Run the program and select an option.
 
 ```text
-=================================
-          CipherMIPS
-=================================
-
+========== CipherMIPS ==========
 1. Caesar Cipher - Encrypt
 2. Caesar Cipher - Decrypt
-3. XOR Cipher - Encrypt
-4. XOR Cipher - Decrypt
-5. Exit
-
-Select an option: 1
-
-Enter message:
-HELLO WORLD
-
-Enter key:
-3
-
-Encrypted message:
-KHOOR ZRUOG
+3. XOR Cipher
+4. Exit
+Select an option:
 ```
 
-## 🎯 Project Goal
+Caesar keys: **1-25**  
+XOR keys: **1-255**
 
-CipherMIPS is an educational project. Caesar and basic XOR ciphers are intentionally simple and should **not** be used for real security.
+## 👥 Team
+| Team Member | Contribution |
+|---|---|
+| **Arnav Nallani** | Menu, user input, validation, program flow, and integration |
+| **Amey Sirdeshpande** | Caesar Cipher encryption and decryption |
+| **Ravneet Kaur** | XOR Cipher encryption and decryption |
 
-The goal is to demonstrate how encryption concepts can be implemented directly at the assembly level, where string operations become operations on individual bytes in memory.
+See `CONTRIBUTIONS.md` for the detailed breakdown.
 
-## 🔜 Next Steps
+## 🎯 Project Purpose
+CipherMIPS is an educational project demonstrating how string transformations can be implemented directly in assembly language.
 
-- [x] Implement Caesar encryption
-- [x] Implement Caesar decryption
-- [x] Implement XOR cipher
-- [ ] Complete main menu
-- [ ] Connect encryption modules
-- [ ] Add user input and key handling
-- [ ] Test edge cases
-- [ ] Complete final integration
-- [ ] Prepare final demonstration
-
-## 💻 Built With
-
-**MIPS Assembly**, designed to run using a MIPS simulator such as **MARS**.
+The Caesar and XOR ciphers used here are simple learning examples and are **not intended for real-world cryptographic security**.
 
 ---
-
 ### CipherMIPS
-
 **Encryption, one instruction at a time. 🔐**
